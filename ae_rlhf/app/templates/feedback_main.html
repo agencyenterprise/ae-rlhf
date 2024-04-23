@@ -1,0 +1,46 @@
+<main class='container mx-auto px-10 py-20' hx-trigger="next-pair from:body" hx-get="{{run.name}}/main">
+    {% if video | length == 0 %}
+        <h2 class = "text-2xl font-bold mb-2 text-center">
+            No more clips to label!
+        </h2>
+        <p class = "text-center"> If there is a data collection process running then you can refresh this page 
+        to get more clips once they are available. </p>
+
+        <div class="flex justify-center">
+            <a href="/feedback/{{run.name}}"/>
+            <button class="mt-20 align-center bg-white font-bold rounded-lg py-4 px-8 shadow-lg uppercase tracking-wider hover:bg-gray-100">
+                Refresh
+            </button>
+            </a>
+        </div>
+    {% else %}
+        <h2 class="text-2xl font-bold mb-2 text-center">
+            Which clip is better?
+        </h2>
+        <p class="text-center">
+            {{remaining_pairs}} pairs remaining
+        </p>
+        <div  class="grid grid-cols-5 gap-4 p-4">
+            <div class="col-span-2">
+                <video id="video-left" width="600" autoplay muted>  
+                    <source src="{{video[0].src}}" type="video/{{video[0].format}}" />
+                </video>
+            </div>
+            <div class="col-span-2 col-start-4">
+                <video id="video-right" width="600" muted>  
+                    <source src="{{video[1].src}}" type="video/{{video[1].format}}" />
+                </video>
+            </div>
+            {% for option in selection_options %}
+            <button 
+                hx-post="/api/pair/{{pair.id}}?label={{option.id}}" 
+                class="{% if (loop.index0==1 or loop.last) %} col-span-1 {% else %} col-span-2 {% endif %} {% if loop.last %}col-start-3 mt-20{% endif %} bg-white font-bold
+                rounded-lg py-4 px-8 shadow-lg uppercase tracking-wider hover:bg-gray-100"
+                >
+                {{option.name}}
+            </button>
+                {% endfor %}
+        </div>
+    {% endif %}
+
+</main>

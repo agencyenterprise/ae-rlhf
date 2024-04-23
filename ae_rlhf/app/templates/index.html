@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.9" integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
+</head>
+<body id="body">
+    <div class="flex flex-col h-screen justify-between">
+        <header>
+            <div class="py-20" style="background: linear-gradient(90deg, #f99556 0%, #fa6e62 100%)"
+                >
+                <div class="container mx-auto max-w-prose px-6 text-center">
+                        <h2 class="text-4xl font-bold mb-2 text-white text-center">
+                            RLHF Atari: Human Feedback
+                        </h2>
+                    <h3 class="text-2xl mt-8 text-gray-200">
+                        Instructions
+                    </h3> 
+                    <p class="mb-8 text-gray-200"> 
+                        You will be presented with two clips of an AI playing an Atari 
+                        game. Your job is to teach the AI by selecting the clip that 
+                        you think is better.  If you can't tell select "I can't tell"
+                        but only use this sparingly since these clips will not be used
+                        to train the AI so it will not learn from them.
+
+                    </p>
+                    
+                    <div class="text-center">
+                    {% if runs | length==0 %}
+                    <h3 class="text-2xl mt-8 text-gray-200">
+                        No runs found
+                    </h3>
+                    <p class="mb-8 text-gray-200"> 
+                        No runs were found.  Execute `python pretrain.py` to initialize
+                        a run or see the README for more information.
+                    </p>
+                   {% else %}
+                   {% for run in runs %}
+                    <a href=/feedback/{{run.name}}/>
+                    <button  class="bg-white font-bold rounded-full py-4 px-8 shadow-lg uppercase tracking-wider my-2">
+                        {{run.name}}, ({{run.env_id}})
+                    </button>
+                    </a>
+                   {% endfor %}
+                   {% endif %}
+                    </div>
+                </div>
+            </div>
+        </header>
+        <footer>
+            <div class="container mx-auto py-10 text-center">
+                <p>Made with <span style="color:#fa6e62;">❤️ </span> by <a class="text-blue-500" href="https://ae.studio">AE Studio</a></p>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>

@@ -1,0 +1,40 @@
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/htmx.org@1.9.9" integrity="sha384-QFjmbokDn2DjBjq+fM+8LUIVrAgqcNW2s0PjAxHETgRn9l4fvX31ZxDxvwQnyMOX" crossorigin="anonymous"></script>
+  <script src="https://unpkg.com/htmx.org/dist/ext/json-enc.js"></script>
+</head>
+<body hx-ext='json-enc' class="flex flex-col min-h-screen">
+        <header>
+            <div class="py-20" style="background: linear-gradient(90deg, #f99556 0%, #fa6e62 100%)"
+                >
+                <div class="container mx-auto max-w-prose px-6 text-center">
+                        <h2 class="text-4xl font-bold mb-2 text-white">
+                            RLHF Atari: Human Feedback
+                        </h2>                    
+                </div>
+            </div>
+        </header> 
+        {% include 'feedback_main.html' %}  
+        <footer class='mt-auto'>
+            <div class="container mx-auto py-10 text-center">
+                <p>Made with <span style="color:#fa6e62;">❤️ </span> by <a class="text-blue-500" href="https://ae.studio">AE Studio</a></p>
+            </div>
+        </footer>
+<script>
+    let play_video = function() {
+        let video_left = document.getElementById("video-left");
+        let video_right = document.getElementById("video-right");
+        video_left.addEventListener('ended', function(e){video_right.play();}, false); 
+        video_right.addEventListener('ended', function(e){video_left.play();}, false);
+    }
+    document.addEventListener("htmx:afterRequest", function(evt) {
+        if (evt.detail.xhr.status == 200) {
+            play_video();
+        }
+    });
+    play_video();
+</script>
+</body>
+</html> 
